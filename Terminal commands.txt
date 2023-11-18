@@ -1,0 +1,23 @@
+ssh -i ~/.ssh/id_ed25519 joshua_clymer@compute.safe.ai
+
+PW: asdf
+
+srun --cpus-per-task=5 --gpus-per-node=1 --partition=single --pty bash
+srun --cpus-per-task=5 --partition=single --pty bash
+
+Request multiple cpus might make it faster
+(Find the CPU per task=5 or something, check the cluster docs)
+
+
+unset XDG_RUNTIME_DIR
+export NODEPORT=$(( $RANDOM + 1024 ))
+echo $NODEPORT
+jupyter notebook --no-browser --port=$NODEPORT
+
+
+ssh -t -t joshua_clymer@compute.safe.ai  -L 8580:localhost:8580 ssh -N compute-permanent-node-990 -L 8580:localhost:8580
+
+export MODEL_NAME=optimus_latent768_beta05
+unzip $MODEL_NAME.zip -d $MODEL_NAME
+
+wget -v 'https://chunylcus.blob.core.windows.net/machines/msrdl/optimus/output/pretrain/philly_rr3_vc4_g8_base_vae_wikipedia_pretraining_beta_schedule_beta1.0_d1.0_ro0.5_ra0.25_768_v2/checkpoint-508523.zip?sp=r&st=2023-08-28T00:40:43Z&se=3023-08-28T08:40:43Z&sv=2022-11-02&sr=c&sig=kUkSFqeHFfTeqxxpvqVdICCJupwODFwJprCAW2o4irE%3D'
